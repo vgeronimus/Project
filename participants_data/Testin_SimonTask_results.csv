@@ -1,0 +1,5 @@
+color,position,condition,key_pressed,response_status,reaction_time,participant_name,participant_age
+purple,right,0,left,1,240.233,Testin,76
+yellow,right,1,left,0,87.58,Testin,76
+purple,left,1,right,0,162.046,Testin,76
+yellow,left,0,left,0,26.641,Testin,76
