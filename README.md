@@ -13,7 +13,13 @@ This repository contains a Simon Task experiment implemented in Python using Psy
 - Python 3
 - PsychoPy
 
-## How to run
+## Installation
 
-```bash
+conda create -n psychopy python=3.10 -y
+conda activate psychopy
+pip install psychopy
+
+## Run
+
+cd project_folder
 python "Simon Task_fin.py"
