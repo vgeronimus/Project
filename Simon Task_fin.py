@@ -101,7 +101,7 @@ condition_practice = df_original['condition'].to_list()
 df_original = df_original.sample(frac=1)
 
 # Show Start Screen
-welcome_text = visual.TextStim(win0, text=f'In this task, you will be shown butterflies appearing on either the left or the right side of the screen. Press the left arrow key (<) if the butterfly is purple and press the right arrow key (>) if the butterfly is yellow. Press any key to start the practice trials!', bold=True, pos=(0.0, 0.0), color=(1.0, 1.0, 1.0))
+welcome_text = visual.TextStim(win0, text=f'In this task, you will be shown butterflies appearing on either the left or the right side of the screen. Press the left arrow key (←) if the butterfly is purple and press the right arrow key (➜) if the butterfly is yellow. Press any key to start the practice trials!', bold=True, pos=(0.0, 0.0), color=(1.0, 1.0, 1.0))
 welcome_text.draw()
 win0.flip()
 print("DEBUG: Instruction screen displayed. Waiting for any key.")
@@ -181,7 +181,7 @@ event.waitKeys()
 # --- 4. The Core Trial Loop (4*n iterations) ---
 
 # Show Start Screen
-welcome_text.text = f"In this task, you will be shown butterflies appearing on either the left or the right side of the screen. Press the left arrow key (<) if the butterfly is purple and press the right arrow key (>) if the butterfly is yellow. Press any key to start the {total_trials}-trial test!"
+welcome_text.text = f"In this task, you will be shown butterflies appearing on either the left or the right side of the screen. Press the left arrow key (←) if the butterfly is purple and press the right arrow key (➜) if the butterfly is yellow. Press any key to start the {total_trials}-trial test!"
 welcome_text.draw()
 win0.flip()
 print("DEBUG: Instruction screen displayed. Waiting for a key.")
@@ -304,4 +304,5 @@ event.waitKeys()
 
 print("DEBUG: SPACE pressed on end screen. Shutting down.")
 win0.close()
+
 core.quit()
