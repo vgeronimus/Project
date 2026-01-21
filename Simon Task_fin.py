@@ -16,13 +16,13 @@ import pandas as pd
 # Read the CSV file
 df_original = pd.read_csv('stimuli.csv')
 
-#Multiply stimuli
-n = 1
+#Multiply stimuli 
+n = 1                    # n = 15 -> 60 trials in total
 df = pd.concat([df_original] * n, ignore_index=True) 
 df = df.sample(frac=1)   # sample ->random shuffling, 1=100% of the rows
-total_trials = len(df) #!!!!!!!!!!!!!
+total_trials = len(df) 
 
-# Convert each column to a list
+# Convert each column (of the file stimuli.csv) to a list
 color = df['color'].to_list()
 position = df['position'].to_list()
 condition = df['condition'].to_list()
@@ -79,6 +79,7 @@ white_butterfly = visual.ImageStim(
     interpolate=True
 )
 
+# List of butterflies to access later
 butterflies = {
     "purple": purple_butterfly,
     "yellow": yellow_butterfly
@@ -89,7 +90,10 @@ key_pressed = []
 reaction_time = []
 response_status = [] # 1=Correct, 0=Incorrect, 2=Timeout
 
-# --- Practice Trials ---
+# --- 3. Practice Trials ---
+
+# doing everything with the original stimuli.csv
+
 # Convert each column to a list
 color_practice = df_original['color'].to_list()
 position_practice = df_original['position'].to_list()
@@ -97,7 +101,7 @@ condition_practice = df_original['condition'].to_list()
 df_original = df_original.sample(frac=1)
 
 # Show Start Screen
-welcome_text = visual.TextStim(win0, text=f'In this task, you will be shown butterflies appearing on either the left or the right side of the screen. Press the left arrow key (←) if the butterfly is purple and press the right arrow key U+2192 if the butterfly is yellow. Press any key to start the practice trials!', bold=True, pos=(0.0, 0.0), color=(1.0, 1.0, 1.0))
+welcome_text = visual.TextStim(win0, text=f'In this task, you will be shown butterflies appearing on either the left or the right side of the screen. Press the left arrow key (<) if the butterfly is purple and press the right arrow key (>) if the butterfly is yellow. Press any key to start the practice trials!', bold=True, pos=(0.0, 0.0), color=(1.0, 1.0, 1.0))
 welcome_text.draw()
 win0.flip()
 print("DEBUG: Instruction screen displayed. Waiting for any key.")
@@ -114,12 +118,12 @@ for i in range(len(color_practice)):
     print(f"\nDEBUG: --- Starting Trial {trial_num} ---")
 
     # 3.1 Display Stimuli
-    current_butterfly = butterflies[color_practice[i]]
-    current_condition = condition_practice[i]
+    current_butterfly = butterflies[color_practice[i]]  # yellow or purple butterfly according to color in stimuli.csv
+    current_condition = condition_practice[i]  # 1 = congruent, 0 = incongruent
 
-    if position_practice[i] == "left":
-        current_butterfly.pos = (-0.5, 0)
-        white_butterfly.pos = (0.5, 0)
+    if position_practice[i] == "left":      
+        current_butterfly.pos = (-0.5, 0)   # show colored butterfly on the side given in stimuli.csv
+        white_butterfly.pos = (0.5, 0)      # show neutral butterfly on the other side
     else:  # position == "right"
         current_butterfly.pos = (0.5, 0)
         white_butterfly.pos = (-0.5, 0)
@@ -127,7 +131,7 @@ for i in range(len(color_practice)):
     
     current_butterfly.draw()
     white_butterfly.draw()
-    win0.flip() # Show the words immediately
+    win0.flip() 
 
     # Wait for Response
     start_t = core.MonotonicClock() # Start the trial timer
@@ -139,6 +143,7 @@ for i in range(len(color_practice)):
     time_taken = start_t.getTime() 
     key_pressed_rn = '0' # Default key press for timeout 
     
+    # Define the correct answer of the current trial
     if color_practice[i] == "purple":
         current_correct_answer = "left"  
     else:
@@ -164,22 +169,24 @@ for i in range(len(color_practice)):
     win0.flip()
     core.wait(0.7)
 
+
 # Finished-Text
 
-welcome_text.text = "Great, you finished the Practice Trials! You can now continue with the experiment."
+welcome_text.text = "Great, you finished the Practice Trials! You can now continue with the experiment. Press any key to continue."
 welcome_text.draw()
 win0.flip()
 event.waitKeys()
 
+
+# --- 4. The Core Trial Loop (4*n iterations) ---
+
 # Show Start Screen
-welcome_text.text = f"In this task, you will be shown butterflies appearing on either the left or the right side of the screen. Press the left arrow key (←) if the butterfly is purple and press the right arrow key (→ ) if the butterfly is yellow. Press any key to start the {total_trials}-trial test!"
+welcome_text.text = f"In this task, you will be shown butterflies appearing on either the left or the right side of the screen. Press the left arrow key (<) if the butterfly is purple and press the right arrow key (>) if the butterfly is yellow. Press any key to start the {total_trials}-trial test!"
 welcome_text.draw()
 win0.flip()
 print("DEBUG: Instruction screen displayed. Waiting for a key.")
 event.waitKeys()
 print("DEBUG: A key pressed. Starting trials.")
-
-# --- 3. The Core Trial Loop (n*10 iterations) ---
 
 
 #event.clearEvents() # Clear any prior key presses before starting the main trials
@@ -189,26 +196,26 @@ for i in range(len(color)):
     trial_num = i + 1
     print(f"\nDEBUG: --- Starting Trial {trial_num} ---")
 
-    # 3.1 Display Stimuli
-    current_butterfly = butterflies[color[i]]
-    current_condition = condition[i] #!!!!!!!!!!!
+    # 4.1 Display Stimuli
+    current_butterfly = butterflies[color[i]]  # yellow or purple butterfly according to color in stimuli.csv
+    current_condition = condition[i] # 1 = congruent, 0 = incongruent
 
     print("DEBUG condition:", current_condition)
 
     if position[i] == "left":
-        current_butterfly.pos = (-0.5, 0)
-        white_butterfly.pos = (0.5, 0)
+        current_butterfly.pos = (-0.5, 0)   # show colored butterfly on the side given in stimuli.csv
+        white_butterfly.pos = (0.5, 0)      # show neutral butterfly on the other side
     else:  # position == "right"
         current_butterfly.pos = (0.5, 0)
         white_butterfly.pos = (-0.5, 0)
 
     current_butterfly.draw()
     white_butterfly.draw()
+    win0.flip() 
 
-    win0.flip() # Show the words immediately
     print(f"DEBUG: Displaying stimuli: {color[i]} / white (Condition: {current_condition})")
 
-    # 3.2 Wait for Response
+    # 4.2 Wait for Response
     start_t = core.MonotonicClock() # Start the trial timer
     print(f"DEBUG: Clock started at {start_t.getTime():.4f} seconds.")
    
@@ -219,23 +226,25 @@ for i in range(len(color)):
     time_taken = start_t.getTime() 
     key_pressed_rn = '0' # Default key press for timeout 
     
+    # Define correct answer in current trial
     if color[i] == "purple":
         current_correct_answer = "left"  
     else:
         current_correct_answer = "right"
 
 
-    # 3.3 Process and Store Results
+    # 4.3 Process and Store Results
     if key_pressed_list == None: # key_pressed_list will be None if maxWait is reached
         # Case A: Timeout (2)
         response_status.append(2)
         reaction_time.append(2000) # Store 2000ms (2 seconds) for a timeout
+        key_pressed.append("0")
     else:
         # Case B: Response made
         # MODIFICATION: We now access the key directly from the list's first element [0]
         key_pressed_rn = key_pressed_list[0]
         print(f"DEBUG: key pressed data: {key_pressed_list}") 
-        reaction_time.append(round(time_taken * 1000, 3)) # Store time in ms #!!!!!!!!!!!
+        reaction_time.append(round(time_taken * 1000, 3)) # Store time in ms # rounded
 
         # Check for correctness
         is_correct = (key_pressed_rn == 'left' and current_correct_answer == "left") or \
@@ -250,13 +259,14 @@ for i in range(len(color)):
         
         key_pressed.append(key_pressed_rn)
     
-        # 3.4 Show Feedback and Pause
-    win0.flip()
-    core.wait(0.7)
+        # 4.4 Show Feedback (we decided against feedback) and Pause
+        #feedback_stim.draw()
+        win0.flip()
+        core.wait(0.7)
 
 
 
-# --- 4. Data Saving and Exit ---
+# --- 5. Data Saving and Exit ---
 
 # Create DataFrame to organize all collected data
 data = pd.DataFrame({
@@ -286,7 +296,7 @@ print("\n--- Final Results (60 Trials) ---\n")
 print(data)
 print("\n-------------------------------\n")
 
-# Show End Screen
+# Show End Screen (here we give feedback)
 welcome_text.text = f"{total_trials} trials completed. You answered {correct_response} correctly. \n\nThank you for participating!\n\nPress any key to exit." #!!!!!!!!!!!
 welcome_text.draw()
 win0.flip()
