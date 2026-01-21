@@ -1,5 +1,5 @@
 color,position,condition,key_pressed,response_status,reaction_time,participant_name,participant_age
-purple,right,0,left,1,139.62,Tester,76
-yellow,right,1,left,0,34.661,Tester,76
-yellow,left,0,left,0,47.516,Tester,76
-purple,left,1,left,1,75.419,Tester,76
+yellow,right,1,left,0,194.974,Tester,76
+purple,right,0,left,1,142.199,Tester,76
+purple,left,1,left,1,17.049,Tester,76
+yellow,left,0,left,0,32.649,Tester,76
