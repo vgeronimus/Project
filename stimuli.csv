@@ -1,0 +1,5 @@
+color,position,condition
+purple,left,1
+purple,right,0
+yellow,left,0
+yellow,right,1
